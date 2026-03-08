@@ -1,0 +1,121 @@
+{
+  "monitoring": {
+    "protected_paths": [
+      "C:\\Users\\Public\\Documents\\RansomwareDefense\\Protected",
+      "C:\\Users\\Public\\Documents\\TestArea",
+      "C:\\Users\\Remond\\Documents",
+      "C:\\Users\\Remond\\Desktop",
+      "C:\\Users\\Remond\\Pictures",
+      "C:\\Users\\Remond\\Downloads",
+      "C:\\Users\\Remond\\Videos",
+      "C:\\Users\\Default User\\Desktop",
+      "C:\\Users\\Default User\\Documents",
+      "C:\\Users\\Default User\\Pictures",
+      "C:\\Users\\Default User\\Downloads",
+      "C:\\Users\\DefaultAppPool\\Desktop",
+      "C:\\Users\\DefaultAppPool\\Documents",
+      "C:\\Users\\DefaultAppPool\\Pictures",
+      "C:\\Users\\DefaultAppPool\\Downloads"
+    ],
+    "excluded_paths": [
+      "C:\\Windows",
+      "C:\\Program Files",
+      "C:\\Program Files (x86)"
+    ],
+    "scan_interval": 1,
+    "enable_decoys": true,
+    "decoy_count": 50,
+    "watch_recursive": true,
+    "monitoring_mode": {
+      "user_files": true,
+      "decoy_files": true,
+      "system_files": true
+    }
+  },
+  "detection": {
+    "entropy_threshold": 6.5,
+    "rapid_change_threshold": 10,
+    "extension_change_threshold": 5,
+    "sensitivity": "high",
+    "suspicious_extensions": [
+      ".encrypted",
+      ".locked",
+      ".crypto",
+      ".crypt",
+      ".cerber",
+      ".locky",
+      ".zepto",
+      ".vault"
+    ],
+    "analyze_entropy": true,
+    "track_processes": true
+  },
+  "containment": {
+    "auto_contain": true,
+    "isolate_network": false,
+    "kill_process": true,
+    "disable_network_drives": false,
+    "lock_system": false,
+    "notification_enabled": true,
+    "alert_threshold": 3
+  },
+  "protection": {
+    "enabled": true,
+    "backup_dir": "data/file_backups",
+    "max_versions": 5,
+    "auto_backup_on_modify": true,
+    "protected_extensions": [
+      ".docx",
+      ".xlsx",
+      ".pdf",
+      ".txt",
+      ".jpg",
+      ".png",
+      ".pptx",
+      ".zip",
+      ".rar"
+    ]
+  },
+  "decoys": {
+    "file_types": [
+      "pdf",
+      "docx",
+      "xlsx",
+      "jpg",
+      "txt",
+      "zip"
+    ],
+    "locations": [
+      "Desktop",
+      "Documents",
+      "Pictures"
+    ],
+    "naming_patterns": [
+      "Financial_Report_2024",
+      "Confidential_Data",
+      "Password_List",
+      "Client_Database",
+      "Backup_Keys"
+    ]
+  },
+  "api": {
+    "host": "0.0.0.0",
+    "port": 8000,
+    "debug": false,
+    "cors_origins": [
+      "http://localhost:3000",
+      "http://localhost:8000"
+    ]
+  },
+  "database": {
+    "path": "data/ransomware_defense.db",
+    "backup_enabled": true,
+    "retention_days": 90
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "logs/ransomware_defense.log",
+    "max_size_mb": 100,
+    "backup_count": 5
+  }
+}
