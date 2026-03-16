@@ -1,211 +1,112 @@
 # 🛡️ Ransomware Defense System - Professional Edition v2.0
 
-[![Performance](https://img.shields.io/badge/Performance-10x_Faster-brightgreen)](https://github.com)
-[![CPU Usage](https://img.shields.io/badge/CPU-85%25_Reduction-blue)](https://github.com)
-[![Production](https://img.shields.io/badge/Status-Production_Ready-success)](https://github.com)
+[![Status](https://img.shields.io/badge/Status-Production_Ready-success)](#)
+[![Security](https://img.shields.io/badge/Security-Multi--Layered_Defense-blue)](#)
+[![Performance](https://img.shields.io/badge/Performance-High_Efficiency-brightgreen)](#)
 
-A comprehensive, enterprise-grade security system designed to detect and contain ransomware attacks in real-time. Built specifically as an internal firewall for Windows systems, it protects sensitive files and data using advanced behavioral analysis and custom algorithms, complemented by a modern web dashboard for monitoring and managing events.
+A comprehensive, enterprise-grade host-based intrusion prevention system (HIPS) designed to detect, block, and contain ransomware attacks in real-time. This system moves beyond traditional signature-based antivirus by combining behavioral heuristics, deception technology, and advanced EDR capabilities.
 
 ---
 
 ## 📑 Table of Contents
-1. [System Overview](#-system-overview)
-2. [Core Features & Technologies](#-core-features--technologies)
-3. [Architecture](#-architecture)
-4. [How It Works (Component Details)](#-how-it-works-component-details)
-5. [Quick Start Guide](#-quick-start-guide)
-6. [Performance Optimizations (v2.0)](#-performance-optimizations-v20)
-7. [API Endpoints](#-api-endpoints)
-8. [Configuration & Customization](#-configuration--customization)
-9. [Troubleshooting](#-troubleshooting)
+1. [Key Features](#-key-features)
+2. [Advanced Detection Engine](#-advanced-detection-engine)
+3. [Automated Containment & Response](#-automated-containment--response)
+4. [Data Protection & Recovery](#-data-protection--recovery)
+5. [System Architecture](#-system-architecture)
+6. [Performance Optimizations](#-performance-optimizations)
+7. [Installation & Setup](#-installation--setup)
 
 ---
 
-## 🎯 System Overview
+## 🚀 Key Features
 
-This system is engineered specifically to protect local environments against ransomware that evades traditional antivirus signatures. It relies heavily on **Behavioral Analysis**; rather than just searching for known virus signatures, it monitors how programs interact with files. It instantly detects rapid modification patterns, sudden spikes in file entropy (data randomness indicating encryption), or unauthorized access to hidden "Decoy" files.
-
-### Primary Objectives:
-- Detect encryption in its earliest stages (within milliseconds).
-- Instantly terminate suspicious processes causing the attack.
-- Isolate the system via network and drive lockdown upon confirming a critical threat.
-- Provide a transparent, real-time dashboard for managing threats and quarantined files.
-
----
-
-## 🚀 Core Features & Technologies
-
-- ✅ **Real-time File Monitoring:** Comprehensive folder monitoring based on an instant alert mechanism.
-- ✅ **Entropy Analysis:** Detects file encryption by calculating data byte randomness. 
-- ✅ **Honeypot/Decoy Files System:** Generates fake files acting as bait. Touching these files acts as an undeniable trigger of a malicious attack.
-- ✅ **YARA Signature Scanning:** Detects known malware using strict rules, with dynamic capabilities to auto-generate rules for zero-day threats.
-- ✅ **Automated Containment:** Process termination (Kill), network isolation, and drive disconnection to shield remaining files.
-- ✅ **Interactive Web Dashboard:** A React-based interface offering a live visualization of system status, alerts, and events via WebSockets.
+*   **Real-time Behavioral Monitoring:** Continuous surveillance of file system activities using low-level kernel events.
+*   **Deception Technology (Honeypots):** Deployment of strategic "Decoy Files" that act as high-fidelity tripwires for automated attacks.
+*   **EDR Phase 2 (Process Tree Analysis):** Detects sophisticated attacks where malicious processes abuse trusted system tools (LOLBins).
+*   **Automatic Data Protection:** Real-time file versioning and backups of sensitive documents before modifications occur.
+*   **Zero-Day Threat Neutralization:** Dynamic YARA rule generation based on the behavior of newly detected malware.
+*   **Multi-Vector Containment:** Instant process termination, network isolation, and drive lockdown.
 
 ---
 
-## 🏗️ Architecture
+## 🔍 Advanced Detection Engine
 
-The project consists of two primary layers:
+The system utilizes a multi-layered approach to ensure high-accuracy detection with minimal false positives:
 
-1. **Backend (Python/FastAPI):** The core engine running the detection logic, monitoring, and containment actions.
-2. **Frontend (React):** The user interface (Dashboard) for event monitoring and system management.
+### 1. Magic Bytes Verification (New)
+The engine performs O(1) validation of file headers against their extensions. If a file (e.g., `.pdf`) has its header corrupted or replaced by encrypted data, the system flags it instantly as a high-confidence indicator of ransomware encryption.
 
-### Directory Structure:
-```text
-Ransomware Defense System/
-├── backend/
-│   ├── core/                        # Core system modules
-│   │   ├── process_cache.py         # Smart process caching for speed
-│   │   ├── async_entropy.py         # Async parallel entropy calculation
-│   │   ├── file_monitor.py          # Watchdog-based file monitor
-│   │   ├── file_protector.py        # Essential file protection and backups
-│   │   ├── decoy_manager.py         # Creation and tracking of decoy files
-│   │   ├── yara_scanner.py          # YARA signature detection engine
-│   │   ├── yara_generator.py        # Automated Zero-Day rule generator
-│   │   └── monitoring_config.py     # Monitoring configuration settings
-│   ├── database/                    # SQLite database management
-│   ├── rules/                       # Detection rules (e.g., YARA)
-│   ├── api/                         # REST API endpoints for the dashboard
-│   └── main.py                      # FastAPI application entry point
-├── frontend/                        # React-based User Interface
-│   ├── src/
-│   │   ├── components/              # UI Components (Dashboard, Settings, Alerts)
-│   │   └── services/                # Backend communication services (Axios/WebSocket)
-├── config/                          # System settings and monitoring preferences
-└── start.bat / install.bat          # Quick start and installation scripts
-```
+### 2. Shannon Entropy Analysis
+Real-time calculation of data randomness. A spike in entropy (typically > 7.0) in non-compressed files is a definitive mathematical indicator of encryption. v2.0 uses **Asynchronous Parallel Processing** to handle large files without system lag.
+
+### 3. EDR & Process Tree Anomaly Detection
+The system monitors not just *what* is happening, but *who* is doing it.
+*   **LOLBins Tracking:** Monitors binaries like `powershell.exe`, `cmd.exe`, and `wscript.exe`.
+*   **Parent-Child Relationship:** Flagged if a suspicious or non-standard process spawns a system tool to modify user files (detecting Living-off-the-Land attacks).
+*   **Smart Process Identification:** Correlates file events with the exact PID and executable path using a high-performance cache.
+
+### 4. YARA Signature Engine
+*   **Static Scanning:** Compiles and scans against thousands of known malware signatures.
+*   **Dynamic Rule Generation:** When a Zero-Day threat is caught behaviorally, the system automatically extracts its MD5/SHA256 hashes and generates a new YARA rule to block it across the environment permanently.
 
 ---
 
-## 🔍 How It Works (Component Details)
+## 🛡️ Automated Containment & Response
 
-### 1️⃣ File Monitor
-It watches predefined paths (e.g., `Documents`, `Desktop`). Upon any file modification, it:
-1. **Calculates the Hash (SHA-256):** To verify if the content actually changed.
-2. **Calculates the Entropy:** A value exceeding 7.0 strongly indicates the file has been encrypted.
-3. Retrieves the Process responsible for the modification to take swift action against it.
+Once a threat reaches the critical threshold, the **Containment Engine** executes a synchronized response:
 
-### 2️⃣ Decoy Manager (Honeypot)
-Generates fake, enticing files (e.g., `Financial_Report.xlsx`) scattered across protected folders. Normal applications should never interact with these files. If they are modified or deleted, the system immediately triggers a maximum severity alert and initiates containment.
-
-### 3️⃣ YARA Scanner & Zero-Day Generator
-An integrated YARA system supporting the behavioral analysis:
-- **Rule Compiler:** Reads and compiles rules from `backend/rules/yara/` for high-speed scanning.
-- **Auto Zero-Day Generation:** When behavioral analysis or decoy files catch a previously unknown malware, `yara_generator` automatically extracts the file's hashes (MD5/SHA-256) and creates a dynamic YARA rule. This instantly blocks the zero-day threat from executing further.
-
-### 4️⃣ Containment Engine
-Upon confirming a threat, the engine executes:
-- **Process Termination:** Kills the process responsible for encrypting the files.
-- **System Lockdown:** Severes network connections to prevent ransomware lateral movement and disconnects shared drives.
-- **Quarantine:** Isolates infected or highly suspicious files to a secure location.
+1.  **Process Neutralization:** Kills the malicious process AND its parent process if identified as the root cause.
+2.  **Network Isolation:** Disables all network adapters via PowerShell to prevent the ransomware from communicating with Command & Control (C2) servers or spreading laterally.
+3.  **Drive Lockdown:** Instantly disconnects network and shared drives to protect remote backups and server data.
+4.  **Malware Quarantine:** Moves the malicious executable to a secure, isolated directory with an encrypted extension (`.quarantine`) to prevent accidental execution.
 
 ---
 
-## 🚀 Quick Start Guide
+## 📂 Data Protection & Recovery
 
-### Prerequisites:
-- Python 3.8+ (for the backend).
-- Node.js 14+ (for the frontend).
-- Windows 10/11 running as Administrator (required for lockdown and containment capabilities).
+### File Protector System
+A dedicated module that provides a "Safety Net" for user data:
+*   **Automatic Backups:** Creates versioned backups of critical extensions (`.docx`, `.xlsx`, `.pdf`, etc.) before any modification process is allowed to complete.
+*   **Restoration:** An easy-to-use interface to restore files to their original state in case of accidental damage or partial encryption.
 
-### 1. Installation
-Open Command Prompt (CMD) as Administrator and run the install script:
-```cmd
-install.bat
-```
-This automatically installs all required backend and frontend dependencies.
-
-### 2. Running the System
-The easiest and recommended way to launch:
-```cmd
-start.bat
-```
-This script starts the FastAPI backend server and launches `npm start` to open the frontend interface.
-
-**Access the Dashboard:** Open your browser to `http://localhost:8000`
+### USB & External Drive Monitoring
+The system automatically detects the insertion of USB drives and external media, extending its protective umbrella to these often-vulnerable entry points.
 
 ---
 
-## ⚡ Performance Optimizations (v2.0)
+## ⚡ Performance Optimizations (Professional v2.0)
 
-Massive optimizations make this an Enterprise-Grade solution:
-- **Smart Process Caching:** Instead of scanning all active processes on every file touch (which caused high CPU usage and took ~500ms), an intelligent 10-second cache reduces process identification time to just **50ms**.
-- **Parallel Async Entropy:** Entropy calculation happens asynchronously in the background for large files, ensuring the OS never freezes, even under a heavy ransomware attack.
-- **Depth Limits & Filtering:** File scanning is limited to a depth of 3 levels, filtering out heavy folders like `.git` or `node_modules` for lightning-fast speeds.
-- Overall CPU utilization reduced by **85%**.
+The system is engineered for enterprise-grade performance with a minimal resource footprint:
 
----
-
-## 🌐 API Endpoints
-
-The FastAPI backend exposes comprehensive endpoints for full dashboard control:
-
-### System Control & Monitoring:
-- `GET /api/status` : Current monitoring status (Active/Inactive).
-- `GET /api/stats` : Quick statistics on threats, alerts, and decoy files.
-- `POST /api/system/start` & `POST /api/system/stop`: Start or stop the monitoring engine.
-
-### YARA Management:
-- `GET /api/yara/rules` : Fetch statistics on active/disabled YARA rules for the dashboard.
-- `POST /api/yara/reload` : Recompile and reload rules after adding new `.yar` files.
-
-### Events & Alerts Management:
-- `GET /api/incidents` : View confirmed attacks.
-- `GET /api/events` : View logged file system modifications.
-- `GET /api/alerts` : View system alerts.
-- `POST /api/alerts/{id}/acknowledge` : Mark an alert as read.
-
-### Containment & Quarantine:
-- `POST /api/containment/trigger/{id}` : Force lockdown and containment for a specific incident.
-- `POST /api/containment/disable-lockdown` : Release the total lockdown, restoring network connectivity and normal settings.
-- `GET /api/quarantine` : List quarantined files.
-- `POST /api/quarantine/{id}/restore` or `delete` : Restore or permanently delete a quarantined file.
-
-### Decoys (Honeypot):
-- `POST /api/decoys/deploy` : Redeploy decoy files if destroyed.
-- `DELETE /api/decoys/all` : Clean the system of all decoy files.
-
-*(The system also utilizes WebSockets for live, real-time responses in the browser)*
+*   **10x Faster Process Identification:** By implementing a TTL-based **Smart Process Cache**, identification time was reduced from **500ms to 50ms**, resulting in an overall CPU usage reduction of **85%**.
+*   **Smart File Sampling:** For large files (>10MB), the system avoids reading the entire file. Instead, it analyzes the **First, Middle, and Last 1MB** to calculate entropy and hashes. This ensures instantaneous analysis regardless of file size.
+*   **Parallel Async Engine:** Heavy mathematical operations (Entropy/Hashing) are offloaded to a dedicated **Process Pool**, preventing the main monitoring loop from blocking or slowing down the OS.
+*   **High-Concurrency Database:** Utilizes an **Asynchronous Batch Writer** for SQLite (WAL mode), allowing the system to log thousands of file events per minute without I/O contention.
+*   **Intelligent Depth Filtering:** Monitoring is optimized to a depth of 3 levels and automatically ignores noise-heavy directories like `.git`, `node_modules`, and temporary system folders.
 
 ---
 
-## ⚙️ Configuration & Customization
+## 🛠️ Installation & Setup
 
-You can adjust the monitoring strictness by editing `config/settings.json`:
-```json
-{
-  "monitoring": {
-    "protected_paths": ["C:\\Users\\Public\\Documents", "C:\\Important\\Files"],
-    "scan_interval": 1,
-    "enable_decoys": true
-  },
-  "detection": {
-    "entropy_threshold": 6.5,
-    "rapid_change_threshold": 10
-  },
-  "containment": {
-    "auto_contain": true,
-    "kill_process": true,
-    "isolate_network": true
-  }
-}
-```
+### Prerequisites
+*   **Python 3.8+** (for the backend)
+*   **Node.js 14+** (for the frontend)
+*   **Windows 10/11** (Administrator privileges required for containment features)
+
+### Quick Start
+1.  **Clone the repository.**
+2.  **Run as Administrator:**
+    ```cmd
+    install.bat
+    ```
+3.  **Launch the system:**
+    ```cmd
+    start.bat
+    ```
+
+**Dashboard Access:** `http://localhost:8000`
 
 ---
 
-## 🛠️ Troubleshooting
-
-| Issue | Cause | Solution |
-|---|---|---|
-| **High CPU usage on startup?** | Initial file indexing | Wait a few seconds. It settles down after building decoy indexes and creating initial backups. |
-| **"database is locked" errors** | Heavy asynchronous updating | Run the `fix_database.bat` script to repair the SQLite database and enable async-safe WAL mode. |
-| **Frontend UI errors or blank screen** | NPM Cache or build issue | Run `fix_interface.bat` or `REBUILD_FRONTEND.bat`. |
-| **System offline due to Lockdown** | A critical threat triggered full network isolation | Click "Disable Lockdown" in the Dashboard or trigger the API endpoint to restore connectivity. |
-
----
-
-> **Security Notice:** To test the system with simulated malware, use `test_full_system.py` or the `test_viruses` directory. **Exercise caution** when running test scripts in a real production environment to protect your data.
-
----
-**Crafted with ❤️ to protect your data from Ransomware! The system is ready for official deployment.**
+*Developed as a high-security solution for protecting critical data against modern Ransomware threats.*
